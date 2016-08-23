@@ -22,7 +22,6 @@
   ],
   "main": "dist/server.js",
   "scripts": {
-    "start": "forever --minUptime 1000 --spinSleepTime 1000 -c \"node --harmony\" ./dist/server.js",
     "build-server": "webpack --colors --display-error-details --config configs/webpack.server.js",
     "build-client": "webpack --colors --display-error-details --config configs/webpack.client.js",
     "build": "concurrently \"npm run build-server\" \"npm run build-client\"",
@@ -31,8 +30,8 @@
     "watch-client": "webpack-dev-server --config configs/webpack.client-watch.js",
     "production": "cross-env NODE_ENV=production npm run build && cross-env NODE_ENV=production npm run start",
     "dev": "concurrently --kill-others \"npm run watch-server-start\" \"npm run watch-server\" \"npm run watch-client\"",
-    "postinstall": "webpack -p --config configs/webpack.client.js",
-    "test": "ava"
+    "postinstall": "webpack -p --config configs/webpack.client.js"
+
   },
   "dependencies": {
     "babel": "6.5.2",
