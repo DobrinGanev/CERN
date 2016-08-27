@@ -1,13 +1,13 @@
 {
-  "name": "hapi-universal-redux",
-  "description": "Isomorphic starterkit with server-side React rendering.",
-  "version": "1.1.1",
+  "name": "CERN",
+  "description": "Cassandra, Express, React and NodeJS.",
+  "version": "0.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Luandro/hapi-universal-redux.git"
+    "url": "https://github.com/DobrinGanev/CERN.git"
   },
-  "homepage": "https://github.com/Luandro/hapi-universal-redux",
+  "homepage": "https://github.com/DobrinGanev/CERN",
   "keywords": [
     "react",
     "react-router",
@@ -16,12 +16,14 @@
     "boilerplate",
     "template",
     "webpack",
-    "hapi",
     "redux",
-    "redux-dev-tools"
+    "redux-dev-tools",
+    "Cassandra database",
+    "Express"
   ],
   "main": "dist/server.js",
   "scripts": {
+   "start": "forever --minUptime 1000 --spinSleepTime 1000 -c \"node --harmony\" ./dist/server.js",
     "build-server": "webpack --colors --display-error-details --config configs/webpack.server.js",
     "build-client": "webpack --colors --display-error-details --config configs/webpack.client.js",
     "build": "concurrently \"npm run build-server\" \"npm run build-client\"",
@@ -31,7 +33,6 @@
     "production": "cross-env NODE_ENV=production npm run build && cross-env NODE_ENV=production npm run start",
     "dev": "concurrently --kill-others \"npm run watch-server-start\" \"npm run watch-server\" \"npm run watch-client\"",
     "postinstall": "webpack -p --config configs/webpack.client.js"
-
   },
   "dependencies": {
     "babel": "6.5.2",
@@ -42,12 +43,12 @@
     "babel-preset-react": "6.11.1",
     "babel-preset-react-hmre": "1.1.1",
     "babel-preset-stage-0": "6.5.0",
+    "babel-register": "^6.14.0",
     "concurrently": "^2.2.0",
     "cross-env": "^2.0.0",
+    "eslint": "^3.4.0",
     "file-loader": "^0.9.0",
     "forever": "0.15.2",
-    "h2o2": "^5.1.0",
-    "hapi": "^14.2.0",
     "inert": "^4.0.1",
     "isomorphic-fetch": "^2.2.1",
     "piping": "1.0.0-rc.3",
