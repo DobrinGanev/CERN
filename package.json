@@ -23,7 +23,7 @@
   ],
   "main": "dist/server.js",
   "scripts": {
-   "start": "forever --minUptime 1000 --spinSleepTime 1000 -c \"node --harmony\" ./dist/server.js",
+    "start": "forever --minUptime 1000 --spinSleepTime 1000 -c \"node --harmony\" ./dist/server.js",
     "build-server": "webpack --colors --display-error-details --config configs/webpack.server.js",
     "build-client": "webpack --colors --display-error-details --config configs/webpack.client.js",
     "build": "concurrently \"npm run build-server\" \"npm run build-client\"",
@@ -44,6 +44,7 @@
     "babel-preset-react-hmre": "1.1.1",
     "babel-preset-stage-0": "6.5.0",
     "babel-register": "^6.14.0",
+    "cassandra-driver": "^3.1.1",
     "concurrently": "^2.2.0",
     "cross-env": "^2.0.0",
     "eslint": "^3.4.0",

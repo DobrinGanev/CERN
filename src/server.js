@@ -12,17 +12,22 @@ let routes = routesContainer;
 /**
  * Create Redux store, and get intitial state.
  */
-
 const server = express()
 server.listen(8000, function () {
   console.log('Server listening on http://localhost:8000, Ctrl+C to stop')
-})
+});
 
+//call
 server.get('/hello', function (req, res) {
-  var data = {
-    message: "hello world from server"
-  }
-  res.send(data);
+  var data = [];
+  data.push({
+    message: "Updated message from server: Hello world from server"
+  })
+  //for effect to see the update of the state
+  setTimeout(function () {
+    res.send(data);
+  }, 3000)
+
 });
 
 var envset = {

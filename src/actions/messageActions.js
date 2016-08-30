@@ -1,14 +1,13 @@
 import fetch from 'isomorphic-fetch';
-import callApi from '../util/apiCaller';
 import {
 	MESSAGE_FETCH,
 	MESSAGE_STOP_FETCH,
 } from './actionTypes';
 
-function receiveMessage(message) {
+function receiveMessage(json) {
 	return {
 		type: MESSAGE_FETCH,
-		messages: message,
+		messages: json,
 		isLoading: true
 	};
 }
@@ -22,12 +21,10 @@ function stopFetch() {
 
 export function fetchMessage() {
 	return function (dispatch) {
-		return callApi('hello', {
-		}).then(function(data) {
-	           var messages =[];
-	            messages.push(data.message)
-	 		       dispatch(receiveMessage(messages));
-	 					 dispatch(stopFetch());
-	 		    });
+		return fetch('/hello')
+			.then(response => response.json())
+			.then(json => dispatch(receiveMessage(json))).then(function(){
+		       dispatch(stopFetch())
+			})
 	 	}
 }

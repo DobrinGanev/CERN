@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { fetchMessage } from '../actions/messageActions';
-import { Link, browserHistory } from 'react-router'
+import { Link, browserHistory } from 'react-router';
+import Message from '../components/Message'
+
 export class App extends Component {
   constructor(props) {
     super(props);
@@ -24,6 +26,7 @@ export class App extends Component {
             </header>
             <div>
               <h2>App</h2>
+              <Message messages={this.props.messages}/>
               {this.props.children}
             </div>
             <p>Loading : {this.props.isLoading.toString()}</p>
