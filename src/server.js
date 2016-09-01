@@ -17,11 +17,24 @@ server.listen(8000, function () {
   console.log('Server listening on http://localhost:8000, Ctrl+C to stop')
 });
 
-//call
+
+/*
+
+*/
+var cassandra = require('cassandra-driver');
+var client = new cassandra.Client({ contactPoints: ['127.0.0.1']});
+/*
+Sample schema
+https://github.com/pmcfadin/cassandra-videodb-sample-schema
+*/
+require("../cassandra/videodb-schema")(client);
+
+
+//test
 server.get('/hello', function (req, res) {
   var data = [];
   data.push({
-    message: "Updated message from server: Hello world from server"
+    message: "Updated message from server: Hello world from  the server"
   })
   //for effect to see the update of the state
   setTimeout(function () {
