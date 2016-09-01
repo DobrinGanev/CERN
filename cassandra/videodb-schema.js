@@ -142,13 +142,14 @@ module.exports = function(client) {
         if (err) {
           console.log(err);
         }
+        callback();
       });
-      callback();
     }, function(err) {
       if (err) {
         console.log(err);
       } else {
         console.log('done creating keyspace and tables');
+        require("../cassandra/videodb-inserts")(client);
       }
     })
   )
