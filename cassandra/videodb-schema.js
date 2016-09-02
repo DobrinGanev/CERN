@@ -1,7 +1,7 @@
 /*
 ref: https://github.com/pmcfadin/cassandra-videodb-sample-schema
 */
-
+import { cassandra } from './common/cassandra';
 var keyspace = "CREATE KEYSPACE IF NOT EXISTS killrvideo WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };";
 var tables = [
 

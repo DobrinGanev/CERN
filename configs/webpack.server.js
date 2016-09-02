@@ -39,6 +39,9 @@ module.exports = {
 		],
 		extensions: ["", ".json", ".js"]
 	},
+	root: [
+	path.resolve('./cassandra'),
+  ],
 	node:    {
 		__dirname: true,
 		fs:        "empty"

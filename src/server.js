@@ -1,3 +1,4 @@
+require('dotenv').config()
 import express from 'express'
 import babelPolyfill from "babel-polyfill";
 import React from "react";
@@ -7,20 +8,16 @@ import configureStore from "./store.js";
 import { Provider } from 'react-redux';
 import routesContainer from "./routes";
 import url from "url";
+import serverConfig from '../config';
 let routes = routesContainer;
 
-/**
- * Create Redux store, and get intitial state.
- */
 const server = express()
-server.listen(8000, function () {
-  console.log('Server listening on http://localhost:8000, Ctrl+C to stop')
+server.listen(serverConfig.port, (error) => {
+  if (!error) {
+    console.log(`CERN is running on port: ${serverConfig.port}! Build something disruptive!`); // eslint-disable-line
+  }
 });
 
-
-/*
-
-*/
 var cassandra = require('cassandra-driver');
 var client = new cassandra.Client({ contactPoints: ['127.0.0.1']});
 /*
@@ -28,7 +25,6 @@ Sample schema
 https://github.com/pmcfadin/cassandra-videodb-sample-schema
 */
 require("../cassandra/videodb-schema")(client);
-
 
 //test
 server.get('/hello', function (req, res) {
@@ -48,6 +44,9 @@ var envset = {
 };
 const hostname = envset.production ? (process.env.HOSTNAME || process['env'].HOSTNAME) : "localhost";
 
+/**
+ * Create Redux store, and get intitial state.
+ */
 const store = configureStore();
 const initialState = store.getState();
 server.use(function(req, res, next) {

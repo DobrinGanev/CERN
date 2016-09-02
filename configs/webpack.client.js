@@ -33,10 +33,14 @@ module.exports = {
 		modulesDirectories: [
 			"src",
 			"node_modules",
-			"web_modules"
+			"web_modules",
+			"cassandra"
 		],
 		extensions: ["", ".json", ".js"]
 	},
+	root: [
+	path.resolve('./cassandra'),
+	],
 	node:    {
 		__dirname: true,
 		fs:        'empty'
