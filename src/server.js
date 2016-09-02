@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import routesContainer from "./routes";
 import url from "url";
 import serverConfig from '../config';
+import { cassandra } from '../cassandra/common/cassandra';
 let routes = routesContainer;
 
 const server = express()
@@ -18,13 +19,12 @@ server.listen(serverConfig.port, (error) => {
   }
 });
 
-var cassandra = require('cassandra-driver');
-var client = new cassandra.Client({ contactPoints: ['127.0.0.1']});
 /*
 Sample schema
 https://github.com/pmcfadin/cassandra-videodb-sample-schema
+ * @param {singleton cassandra client instance} cassandra.
 */
-require("../cassandra/videodb-schema")(client);
+require("../cassandra/videodb-schema")(cassandra);
 
 //test
 server.get('/hello', function (req, res) {

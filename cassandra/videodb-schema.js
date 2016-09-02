@@ -1,7 +1,6 @@
 /*
 ref: https://github.com/pmcfadin/cassandra-videodb-sample-schema
 */
-import { cassandra } from './common/cassandra';
 var keyspace = "CREATE KEYSPACE IF NOT EXISTS killrvideo WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };";
 var tables = [
 
@@ -125,18 +124,28 @@ var tables = [
 
 var async = require("async");
 module.exports = function(client) {
-
+  /**
+   * CREATE keyspace IF NOT EXISTS statement
+   * @param {string} keyspace - List of tables.
+   */
   (() => {
     client.execute(keyspace, function(err) {
       if (err) {
         console.log(err);
       } else {
+        /**
+         * When successfully created create all tables.
+         */
         createTables();
       }
     })
   })()
 
   const createTables = () => (
+    /**
+     * CREATE keyspace IF NOT EXISTS statement
+     * @param {array} tables - List of create table statements.
+     */
     async.each(tables, function(table, callback) {
       client.execute(table, function(err) {
         if (err) {

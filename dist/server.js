@@ -27,7 +27,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "9028b2d6a4a8ec346cbc"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "863e9949485be998b72c"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -666,6 +666,8 @@
 	
 	var _config2 = _interopRequireDefault(_config);
 	
+	var _cassandra = __webpack_require__(30);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	__webpack_require__(27).config();
@@ -679,13 +681,13 @@
 			}
 	});
 	
-	var cassandra = __webpack_require__(28);
-	var client = new cassandra.Client({ contactPoints: ['127.0.0.1'] });
+	// var cassandra = require('cassandra-driver');
+	// var client = new cassandra.Client({ contactPoints: ['127.0.0.1']});
 	/*
 	Sample schema
 	https://github.com/pmcfadin/cassandra-videodb-sample-schema
 	*/
-	__webpack_require__(29)(client);
+	__webpack_require__(29)(_cassandra.cassandra);
 	
 	//test
 	server.get('/hello', function (req, res) {
@@ -1298,7 +1300,7 @@
 	  value: true
 	});
 	var config = {
-	  contactPoints: ['127.0.0.1'],
+	  contactPoints: process.env.CASSANDRA_CONTACT_POINTS || ['127.0.0.1'],
 	  port: process.env.PORT || 3000
 	};
 	
@@ -1322,12 +1324,10 @@
 
 	'use strict';
 	
-	var _cassandra = __webpack_require__(30);
-	
-	var keyspace = "CREATE KEYSPACE IF NOT EXISTS killrvideo WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };"; /*
-	                                                                                                                                        ref: https://github.com/pmcfadin/cassandra-videodb-sample-schema
-	                                                                                                                                        */
-	
+	/*
+	ref: https://github.com/pmcfadin/cassandra-videodb-sample-schema
+	*/
+	var keyspace = "CREATE KEYSPACE IF NOT EXISTS killrvideo WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };";
 	var tables = [
 	
 	// User credentials, keyed by email address so we can authenticate
@@ -1379,33 +1379,45 @@
 	
 	var async = __webpack_require__(32);
 	module.exports = function (client) {
-	
+	  /**
+	   * CREATE keyspace IF NOT EXISTS statement
+	   * @param {string} keyspace - List of tables.
+	   */
 	  (function () {
 	    client.execute(keyspace, function (err) {
 	      if (err) {
 	        console.log(err);
 	      } else {
+	        /**
+	         * When successfully created create all tables.
+	         */
 	        createTables();
 	      }
 	    });
 	  })();
 	
 	  var createTables = function createTables() {
-	    return async.each(tables, function (table, callback) {
-	      client.execute(table, function (err) {
+	    return (
+	      /**
+	       * CREATE keyspace IF NOT EXISTS statement
+	       * @param {array} tables - List of create table statements.
+	       */
+	      async.each(tables, function (table, callback) {
+	        client.execute(table, function (err) {
+	          if (err) {
+	            console.log(err);
+	          }
+	          callback();
+	        });
+	      }, function (err) {
 	        if (err) {
 	          console.log(err);
+	        } else {
+	          console.log('done creating keyspace and tables');
+	          __webpack_require__(33)(client);
 	        }
-	        callback();
-	      });
-	    }, function (err) {
-	      if (err) {
-	        console.log(err);
-	      } else {
-	        console.log('done creating keyspace and tables');
-	        __webpack_require__(33)(client);
-	      }
-	    });
+	      })
+	    );
 	  };
 	};
 
@@ -1611,7 +1623,12 @@
 	
 	var async = __webpack_require__(32);
 	var tables = ["user_credentials", "users", "videos", "user_videos", "latest_videos", "video_rating", "video_ratings_by_user", "videos_by_tag", "tags_by_letter", "comments_by_video", "comments_by_user", "video_event"];
+	
 	module.exports = function (client) {
+	  /**
+	   * TRUNCATE tables then insert the data.this will run everytime the server is restarted
+	   * @param {array} tables - List of tables.
+	   */
 	  (function () {
 	    async.each(tables, function (table, callback) {
 	      client.execute("TRUNCATE TABLE killrvideo." + table + ";", function (err) {
@@ -1626,7 +1643,18 @@
 	        console.log(err);
 	      } else {
 	        console.log('done truncating tables');
-	        /*do all inserts after the tables are truncated*/
+	        /**
+	         * Insert all the data
+	         * @param {array} user_credentials -List of insert statements. table user_credentials.
+	         * @param {array} users -List of insert statements. table users.
+	         * @param {array} user_videos -List of insert statements.table user_videos.
+	         * @param {array} latest_videos -List of insert statements.table latest_videos.
+	         * @param {array} video_rating_update - List of insert statements.table video_rating_update.
+	         * @param {array} video_ratings_by_user - List of insert statements.table video_ratings_by_user.
+	         * @param {array} videos_by_tag - List of insert statements.table videos_by_tag.
+	         * @param {array} comments_by_video - List of insert statements.table comments_by_video.
+	         * @param {array} video_event - List of insert statements .table video_event.
+	         */
 	        inserts(user_credentials);
 	        inserts(users);
 	        inserts(user_videos);
@@ -1639,6 +1667,10 @@
 	      }
 	    });
 	  })();
+	  /**
+	   * TRUNCATE tables then insert statements the data.
+	   * @param {array} inserts - List of insert statements .
+	   */
 	  var inserts = function inserts(_inserts) {
 	    return async.each(_inserts, function (insert, callback) {
 	      client.execute(insert, function (err) {

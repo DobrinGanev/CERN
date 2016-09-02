@@ -238,7 +238,13 @@ let tables = [
   "comments_by_user",
   "video_event"
 ];
+
 module.exports = function(client) {
+  /**
+   * TRUNCATE tables then insert the data.this will run everytime the server is restarted
+   *
+   * @param {array} tables - List of tables.
+   */
 (() => {
   async.each(tables, function(table, callback) {
     client.execute(`TRUNCATE TABLE killrvideo.${table};`, function(err) {
@@ -253,7 +259,19 @@ module.exports = function(client) {
       console.log(err);
     } else {
       console.log('done truncating tables');
-      /*do all inserts after the tables are truncated*/
+      /**
+       * Insert all the data
+       *
+       * @param {array} user_credentials -List of insert statements. table user_credentials.
+       * @param {array} users -List of insert statements. table users.
+       * @param {array} user_videos -List of insert statements.table user_videos.
+       * @param {array} latest_videos -List of insert statements.table latest_videos.
+       * @param {array} video_rating_update - List of insert statements.table video_rating_update.
+       * @param {array} video_ratings_by_user - List of insert statements.table video_ratings_by_user.
+       * @param {array} videos_by_tag - List of insert statements.table videos_by_tag.
+       * @param {array} comments_by_video - List of insert statements.table comments_by_video.
+       * @param {array} video_event - List of insert statements .table video_event.
+       */
       inserts(user_credentials)
       inserts(users)
       inserts(user_videos)
@@ -266,6 +284,11 @@ module.exports = function(client) {
     }
   })
 })()
+
+/**
+ * TRUNCATE tables then insert statements the data.
+ * @param {array} inserts - List of insert statements .
+ */
   const inserts = (inserts) => (
     async.each(inserts, function(insert, callback) {
       client.execute(insert, function(err) {
@@ -282,5 +305,4 @@ module.exports = function(client) {
       }
     })
   )
-
 };
