@@ -1,2 +1,0 @@
-export const MESSAGE_FETCH = 'MESSAGE_FETCH';
-export const MESSAGE_STOP_FETCH = 'MESSAGE_STOP_FETCH';

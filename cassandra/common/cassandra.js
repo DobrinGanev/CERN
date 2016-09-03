@@ -7,6 +7,7 @@ import config from '../../config';
 * https://github.com/KillrVideo/killrvideo-nodejs
 */
 
+
 export const cassandra = Promise.promisifyAll(
   new Client({
     contactPoints: config.contactPoints,

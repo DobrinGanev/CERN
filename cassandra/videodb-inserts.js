@@ -264,6 +264,7 @@ module.exports = function(client) {
        *
        * @param {array} user_credentials -List of insert statements. table user_credentials.
        * @param {array} users -List of insert statements. table users.
+       * @param {array} videos -List of insert statements. table videos.
        * @param {array} user_videos -List of insert statements.table user_videos.
        * @param {array} latest_videos -List of insert statements.table latest_videos.
        * @param {array} video_rating_update - List of insert statements.table video_rating_update.
@@ -274,6 +275,7 @@ module.exports = function(client) {
        */
       inserts(user_credentials)
       inserts(users)
+      inserts(videos)
       inserts(user_videos)
       inserts(latest_videos)
       inserts(video_rating_update)

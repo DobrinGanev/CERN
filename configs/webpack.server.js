@@ -9,7 +9,7 @@ module.exports = {
 	context: __dirname,
 	debug:   false,
 	devtool: "source-map",
-	entry:   ["../src/server"],
+	entry:   ["../server/server"],
 	output:  {
 		path:          path.join(__dirname, "../dist"),
 		filename:      "server.js"
