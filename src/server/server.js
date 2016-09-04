@@ -4,9 +4,9 @@ import babelPolyfill from "babel-polyfill";
 import React from "react";
 import ReactDOM from "react-dom/server";
 import { RouterContext, match,createMemoryHistory } from "react-router";
-import configureStore from "../client/store.js";
+import configureStore from "./store.js";
 import { Provider } from 'react-redux';
-import routesContainer from "../client/routes";
+import routesContainer from "./routes";
 import url from "url";
 import serverConfig from '../config';
 import { cassandra } from '../cassandra/common/cassandra';
@@ -24,7 +24,7 @@ Sample schema
 https://github.com/pmcfadin/cassandra-videodb-sample-schema
  * @param {singleton cassandra client instance} cassandra.
 */
-// require("../cassandra/sampleData/examples/videodb/videodb-schema")(cassandra);
+require("../cassandra/videodb-schema")(cassandra);
 
 //test
 server.get('/hello', function (req, res) {
@@ -89,8 +89,8 @@ if (__DEV__) {
 	if (module.hot) {
 		console.log("[HMR] Waiting for server-side updates");
 
-		module.hot.accept("../client/routes", () => {
-			routes = require("../client/routes");
+		module.hot.accept("./routes", () => {
+			routes = require("./routes");
 		});
 
 		module.hot.addStatusHandler((status) => {
