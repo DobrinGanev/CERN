@@ -53,6 +53,7 @@
     "eslint-plugin-jsx-a11y": "^2.2.1",
     "file-loader": "^0.9.0",
     "forever": "0.15.2",
+    "grpc": "^1.0.0",
     "inert": "^4.0.1",
     "isomorphic-fetch": "^2.2.1",
     "piping": "1.0.0-rc.3",
