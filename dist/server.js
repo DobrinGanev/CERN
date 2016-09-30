@@ -27,7 +27,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "174fb5cfd10271cfd6e0"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "c299c676bc24cc43ca60"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -1032,7 +1032,7 @@
 	  function App(props) {
 	    _classCallCheck(this, App);
 	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this, props));
+	    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 	  }
 	
 	  _createClass(App, [{
