@@ -4,6 +4,7 @@ import { fetchMessage } from '../actions/messageActions';
 import { Link, browserHistory } from 'react-router';
 import Message from '../components/Message'
 
+
 export class App extends Component {
   constructor(props) {
     super(props);

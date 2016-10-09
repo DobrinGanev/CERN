@@ -3,13 +3,21 @@ import express from 'express'
 import babelPolyfill from "babel-polyfill";
 import React from "react";
 import ReactDOM from "react-dom/server";
-import { RouterContext, match,createMemoryHistory } from "react-router";
+import {
+  RouterContext,
+  match,
+  createMemoryHistory
+} from "react-router";
 import configureStore from "../client/store.js";
-import { Provider } from 'react-redux';
+import {
+  Provider
+} from 'react-redux';
 import routesContainer from "../client/routes";
 import url from "url";
 import serverConfig from '../config';
-import { cassandra } from '../cassandra/common/cassandra';
+import {
+  cassandra
+} from '../cassandra/common/cassandra';
 let routes = routesContainer;
 
 const server = express()
@@ -27,13 +35,13 @@ https://github.com/pmcfadin/cassandra-videodb-sample-schema
 // require("../cassandra/sampleData/examples/videodb/videodb-schema")(cassandra);
 
 //test
-server.get('/hello', function (req, res) {
+server.get('/hello', function(req, res) {
   var data = [];
   data.push({
-    message: "Updated message from server: Hello world from  the server"
-  })
-  //for effect to see the update of the state
-  setTimeout(function () {
+      message: "Updated message from server: Hello world from  the server"
+    })
+    //for effect to see the update of the state
+  setTimeout(function() {
     res.send(data);
   }, 3000)
 
@@ -50,7 +58,7 @@ const hostname = envset.production ? (process.env.HOSTNAME || process['env'].HOS
 const store = configureStore();
 const initialState = store.getState();
 server.use(function(req, res, next) {
-  match({routes, location: req.url}, (error, redirectLocation, renderProps) => {
+  match({ routes,location: req.url}, (error, redirectLocation, renderProps) => {
     if (redirectLocation) {
       res.redirect(redirectLocation.pathname + redirectLocation.search);
       return;
@@ -59,18 +67,24 @@ server.use(function(req, res, next) {
       next();
       return;
     }
-	const reactString = ReactDOM.renderToString(
-		<Provider store={store}>
-      <RouterContext {...renderProps} />
-		</Provider>
-	);
-	const webserver = __PRODUCTION__ ? "" : `//${hostname}:8080`;
-	let output = (
-		`<!doctype html>
+    const reactString = ReactDOM.renderToString(
+      <Provider store ={store}>
+        <RouterContext {...renderProps}/>
+      </Provider>
+    );
+    const webserver = __PRODUCTION__ ? "" : `//${hostname}:8080`;
+    console.log(webserver);
+
+    let output = (
+   `<!doctype html>
 		<html lang="en-us">
 			<head>
 				<meta charset="utf-8">
-				<title></title>
+				<title>
+         </title>
+         <link href=${webserver}/dist/main.css rel=stylesheet/>
+         <link rel=stylesheet href=${webserver}/node_modules/material-design-lite/material.min.css>
+         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 			</head>
 			<body>
 				<div id="react-root">${reactString}</div>
@@ -78,25 +92,26 @@ server.use(function(req, res, next) {
 					window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
 				</script>
 				<script src=${webserver}/dist/client.js></script>
+        <script src=${webserver}/node_modules/material-design-lite/material.min.js></script>
 			</body>
 		</html>`
-		);
+    );
     res.send(output);
   });
 });
 
 if (__DEV__) {
-	if (module.hot) {
-		console.log("[HMR] Waiting for server-side updates");
+  if (module.hot) {
+    console.log("[HMR] Waiting for server-side updates");
 
-		module.hot.accept("../client/routes", () => {
-			routes = require("../client/routes");
-		});
+    module.hot.accept("../client/routes", () => {
+      routes = require("../client/routes");
+    });
 
-		module.hot.addStatusHandler((status) => {
-			if (status === "abort") {
-				setTimeout(() => process.exit(0), 0);
-			}
-		});
-	}
+    module.hot.addStatusHandler((status) => {
+      if (status === "abort") {
+        setTimeout(() => process.exit(0), 0);
+      }
+    });
+  }
 }

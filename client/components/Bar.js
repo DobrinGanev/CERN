@@ -1,7 +1,7 @@
 import React from 'react'
 const Bar = () => (
   <div>
-    <h2>Bar</h2>
+    <h2>Barf</h2>
   </div>
   )
 
