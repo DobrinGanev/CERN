@@ -40,8 +40,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 (0, _index2.default)("ClassProperty", {
   visitor: ["key", "value", "typeAnnotation", "decorators"],
-  aliases: ["Flow", "Property"],
-  fields: {}
+  builder: ["key", "value", "typeAnnotation", "decorators", "computed"],
+  aliases: ["Property"],
+  fields: {
+    computed: {
+      validate: (0, _index.assertValueType)("boolean"),
+      default: false
+    }
+  }
 });
 
 (0, _index2.default)("DeclareClass", {
@@ -80,8 +86,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   fields: {}
 });
 
+(0, _index2.default)("DeclareOpaqueType", {
+  visitor: ["id", "typeParameters", "supertype"],
+  aliases: ["Flow", "FlowDeclaration", "Statement", "Declaration"],
+  fields: {}
+});
+
 (0, _index2.default)("DeclareVariable", {
   visitor: ["id"],
+  aliases: ["Flow", "FlowDeclaration", "Statement", "Declaration"],
+  fields: {}
+});
+
+(0, _index2.default)("DeclareExportDeclaration", {
+  visitor: ["declaration", "specifiers", "source"],
   aliases: ["Flow", "FlowDeclaration", "Statement", "Declaration"],
   fields: {}
 });
@@ -130,6 +148,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   aliases: ["Flow", "FlowBaseAnnotation"]
 });
 
+(0, _index2.default)("EmptyTypeAnnotation", {
+  aliases: ["Flow", "FlowBaseAnnotation"]
+});
+
 (0, _index2.default)("NullableTypeAnnotation", {
   visitor: ["typeAnnotation"],
   aliases: ["Flow"],
@@ -175,6 +197,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 (0, _index2.default)("TypeAlias", {
   visitor: ["id", "typeParameters", "right"],
+  aliases: ["Flow", "FlowDeclaration", "Statement", "Declaration"],
+  fields: {}
+});
+
+(0, _index2.default)("OpaqueType", {
+  visitor: ["id", "typeParameters", "impltype", "supertype"],
   aliases: ["Flow", "FlowDeclaration", "Statement", "Declaration"],
   fields: {}
 });
@@ -229,6 +257,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 (0, _index2.default)("ObjectTypeProperty", {
   visitor: ["key", "value"],
+  aliases: ["Flow", "UserWhitespacable"],
+  fields: {}
+});
+
+(0, _index2.default)("ObjectTypeSpreadProperty", {
+  visitor: ["argument"],
   aliases: ["Flow", "UserWhitespacable"],
   fields: {}
 });

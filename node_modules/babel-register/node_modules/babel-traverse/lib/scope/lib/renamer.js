@@ -68,49 +68,24 @@ var Renamer = function () {
       specifiers.push(t.exportSpecifier(t.identifier(localName), t.identifier(exportedName)));
     }
 
-    var aliasDeclar = t.exportNamedDeclaration(null, specifiers);
+    if (specifiers.length) {
+      var aliasDeclar = t.exportNamedDeclaration(null, specifiers);
 
-    if (parentDeclar.isFunctionDeclaration()) {
-      aliasDeclar._blockHoist = 3;
+      if (parentDeclar.isFunctionDeclaration()) {
+        aliasDeclar._blockHoist = 3;
+      }
+
+      exportDeclar.insertAfter(aliasDeclar);
+      exportDeclar.replaceWith(parentDeclar.node);
     }
-
-    exportDeclar.insertAfter(aliasDeclar);
-    exportDeclar.replaceWith(parentDeclar.node);
-  };
-
-  Renamer.prototype.maybeConvertFromClassFunctionDeclaration = function maybeConvertFromClassFunctionDeclaration(path) {
-    return;
-
-    if (!path.isFunctionDeclaration() && !path.isClassDeclaration()) return;
-    if (this.binding.kind !== "hoisted") return;
-
-    path.node.id = t.identifier(this.oldName);
-    path.node._blockHoist = 3;
-
-    path.replaceWith(t.variableDeclaration("let", [t.variableDeclarator(t.identifier(this.newName), t.toExpression(path.node))]));
-  };
-
-  Renamer.prototype.maybeConvertFromClassFunctionExpression = function maybeConvertFromClassFunctionExpression(path) {
-    return;
-
-    if (!path.isFunctionExpression() && !path.isClassExpression()) return;
-    if (this.binding.kind !== "local") return;
-
-    path.node.id = t.identifier(this.oldName);
-
-    this.binding.scope.parent.push({
-      id: t.identifier(this.newName)
-    });
-
-    path.replaceWith(t.assignmentExpression("=", t.identifier(this.newName), path.node));
   };
 
   Renamer.prototype.rename = function rename(block) {
-    var binding = this.binding;
-    var oldName = this.oldName;
-    var newName = this.newName;
-    var scope = binding.scope;
-    var path = binding.path;
+    var binding = this.binding,
+        oldName = this.oldName,
+        newName = this.newName;
+    var scope = binding.scope,
+        path = binding.path;
 
 
     var parentDeclar = path.find(function (path) {
@@ -129,11 +104,6 @@ var Renamer = function () {
     }
 
     if (binding.type === "hoisted") {}
-
-    if (parentDeclar) {
-      this.maybeConvertFromClassFunctionDeclaration(parentDeclar);
-      this.maybeConvertFromClassFunctionExpression(parentDeclar);
-    }
   };
 
   return Renamer;

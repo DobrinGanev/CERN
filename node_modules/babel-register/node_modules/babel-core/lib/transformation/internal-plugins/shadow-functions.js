@@ -66,20 +66,24 @@ function remap(path, key) {
   var currentFunction = void 0;
   var passedShadowFunction = false;
 
-  var fnPath = path.findParent(function (path) {
-    if (path.isProgram() || path.isFunction()) {
-      currentFunction = currentFunction || path;
+  var fnPath = path.find(function (innerPath) {
+    if (innerPath.parentPath && innerPath.parentPath.isClassProperty() && innerPath.key === "value") {
+      return true;
+    }
+    if (path === innerPath) return false;
+    if (innerPath.isProgram() || innerPath.isFunction()) {
+      currentFunction = currentFunction || innerPath;
     }
 
-    if (path.isProgram()) {
+    if (innerPath.isProgram()) {
       passedShadowFunction = true;
 
       return true;
-    } else if (path.isFunction() && !path.isArrowFunctionExpression()) {
+    } else if (innerPath.isFunction() && !innerPath.isArrowFunctionExpression()) {
       if (shadowFunction) {
-        if (path === shadowFunction || path.node === shadowFunction.node) return true;
+        if (innerPath === shadowFunction || innerPath.node === shadowFunction.node) return true;
       } else {
-        if (!path.is("shadow")) return true;
+        if (!innerPath.is("shadow")) return true;
       }
 
       passedShadowFunction = true;
@@ -100,27 +104,33 @@ function remap(path, key) {
   if (!passedShadowFunction) return;
 
   var cached = fnPath.getData(key);
-  if (cached) return path.replaceWith(cached);
+  if (!cached) {
+    var id = path.scope.generateUidIdentifier(key);
 
-  var id = path.scope.generateUidIdentifier(key);
+    fnPath.setData(key, id);
+    cached = id;
 
-  fnPath.setData(key, id);
+    var classPath = fnPath.findParent(function (p) {
+      return p.isClass();
+    });
+    var hasSuperClass = !!(classPath && classPath.node && classPath.node.superClass);
 
-  var classPath = fnPath.findParent(function (p) {
-    return p.isClass();
-  });
-  var hasSuperClass = !!(classPath && classPath.node && classPath.node.superClass);
+    if (key === "this" && fnPath.isMethod({ kind: "constructor" }) && hasSuperClass) {
+      fnPath.scope.push({ id: id });
 
-  if (key === "this" && fnPath.isMethod({ kind: "constructor" }) && hasSuperClass) {
-    fnPath.scope.push({ id: id });
+      fnPath.traverse(superVisitor, { id: id });
+    } else {
+      var init = key === "this" ? t.thisExpression() : t.identifier(key);
 
-    fnPath.traverse(superVisitor, { id: id });
-  } else {
-    var init = key === "this" ? t.thisExpression() : t.identifier(key);
+      if (shadowFunction) init._shadowedFunctionLiteral = shadowFunction;
 
-    fnPath.scope.push({ id: id, init: init });
+      fnPath.scope.push({ id: id, init: init });
+    }
   }
 
-  return path.replaceWith(id);
+  var node = t.cloneDeep(cached);
+  node.loc = path.node.loc;
+
+  return path.replaceWith(node);
 }
 module.exports = exports["default"];
