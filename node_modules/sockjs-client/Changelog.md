@@ -1,3 +1,25 @@
+1.1.4
+==
+ * Upgrade `debug` and fix object key literal mangling, fixes regression in Opera 11.10 #359
+ * Trim descriptions in package.json and bower.json - #372
+
+1.1.3
+==
+  * Bad publish to NPM (removed)
+
+1.1.2
+==
+
+ * Ensure both sender and receiver are cleaned upon close - #342
+ * Remove event listeners before calling `close` - #344
+ * Update documentation links - #351, #339, #316
+ * Explicitly export `undefined` when `WebSocket` does not exist. Fixes Webpack. #321
+ * Include `dist` folder on npm - #265
+ * Simplify build setup
+ * Update to Node.js 6.9
+ * Add sourcemap for minified version
+ * Remove unused String.trim shim
+
 1.1.1
 ==
 

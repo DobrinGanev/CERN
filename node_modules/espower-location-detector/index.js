@@ -6,7 +6,7 @@
  *
  * Copyright (c) 2015-2016 Takuto Wada
  * Licensed under the MIT license.
- *   https://github.com/twada/espower-location-detector/blob/master/MIT-LICENSE.txt
+ *   https://github.com/twada/espower-location-detector/blob/master/LICENSE
  */
 'use strict';
 

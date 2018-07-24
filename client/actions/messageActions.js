@@ -1,24 +1,24 @@
 import fetch from 'isomorphic-fetch';
-import {FETCH_MESSAGE_START, FETCH_MESSAGE_ERROR, RECEIVE_MESSAGE} from './actionTypes';
+import { FETCH_MESSAGE_START, FETCH_MESSAGE_ERROR, RECEIVE_MESSAGE } from './actionTypes';
 
 const receiveMessage = (json) => {
-				return {type: RECEIVE_MESSAGE, messages: json};
+	return { type: RECEIVE_MESSAGE, messages: json };
 }
 const fetchMessageStart = () => {
-				return {type: FETCH_MESSAGE_START};
+	return { type: FETCH_MESSAGE_START };
 }
 const fetchError = () => {
-				return {type: FETCH_MESSAGE_ERROR}
+	return { type: FETCH_MESSAGE_ERROR }
 }
 
 export const fetchMessage = () => {
-				return function (dispatch) {
-								dispatch(fetchMessageStart())
-								return fetch('/hello')
-												.then(response => response.json())
-												.then(json => dispatch(receiveMessage(json)))
-												.then(function () {
-																//  dispatch(stopFetch())
-												})
-				}
+	return function (dispatch) {
+		dispatch(fetchMessageStart())
+		return fetch('/hello')
+			.then(response => response.json())
+			.then(json => dispatch(receiveMessage(json)))
+			.then(function () {
+				//  dispatch(stopFetch())
+			})
+	}
 }

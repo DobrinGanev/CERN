@@ -5,7 +5,7 @@ ref: https://github.com/pmcfadin/cassandra-videodb-sample-schema
 */
 
 //User_credentials
-let user_credentials = [];
+const user_credentials = [];
 user_credentials.push("INSERT INTO killrvideo.user_credentials (userid,  email, password)" +
   "VALUES (d0f60aa8-54a9-4840-b70c-fe562b68842b,'tcodd@relational.com','5f4dcc3b5aa765d61d8327deb882cf99');");
 
@@ -16,7 +16,7 @@ user_credentials.push("INSERT INTO killrvideo.user_credentials (userid,  email, 
   "VALUES (9761d3d7-7fbd-4269-9988-6cfd4e188678,'patrick@datastax.com','ba27e03fd95e507daf2937c937d499ab');");
 
 //Users
-let users = [];
+const users = [];
 users.push("INSERT INTO killrvideo.users (userid, firstname, lastname, email, created_date)" +
   "VALUES (d0f60aa8-54a9-4840-b70c-fe562b68842b,'Ted','Codd', 'tcodd@relational.com','2011-06-01 08:00:00');");
 
@@ -27,7 +27,7 @@ users.push("INSERT INTO killrvideo.users (userid, firstname, lastname, email, cr
   "VALUES (9761d3d7-7fbd-4269-9988-6cfd4e188678,'Patrick','McFadin', 'patrick@datastax.com','2011-06-20 13:50:00');");
 
 //Videos
-let videos = [];
+const videos = [];
 videos.push("INSERT INTO killrvideo.videos (videoid, name, userid, description, location, location_type, preview_thumbnails, tags, added_date)" +
   "VALUES (99051fe9-6a9c-46c2-b949-38ef78858dd0,'My funny cat',d0f60aa8-54a9-4840-b70c-fe562b68842b, 'My cat likes to play the piano! So funny.','/us/vid/b3/b3a76c6b-7c7f-4af6-964f-803a9283c401',1,{'10':'/us/vid/b3/b3a76c6b-7c7f-4af6-964f-803a9283c401'},{'cats','piano','lol'},'2012-06-01 08:00:00');");
 
@@ -51,7 +51,7 @@ videos.push("INSERT INTO killrvideo.videos (videoid, name, userid, description, 
 
 
 // user_videos - Every video a user uploads is indexed into a single partition by username
-let user_videos = [];
+const user_videos = [];
 user_videos.push("INSERT INTO killrvideo.user_videos (userid, videoid, added_date, name, preview_image_location)" +
   "VALUES (d0f60aa8-54a9-4840-b70c-fe562b68842b,99051fe9-6a9c-46c2-b949-38ef78858dd0,'2012-06-01 08:00:00','My funny cat','/us/vid/b3/b3a76c6b-7c7f-4af6-964f-803a9283c401');");
 
@@ -75,7 +75,7 @@ user_videos.push("INSERT INTO killrvideo.user_videos (userid, videoid, added_dat
 
 
 //latest_videos
-let latest_videos = [];
+const latest_videos = [];
 latest_videos.push("INSERT INTO killrvideo.latest_videos (yyyymmdd, videoid, added_date, name, preview_image_location)" +
   "VALUES ('2012-06-01',99051fe9-6a9c-46c2-b949-38ef78858dd0,'2012-06-01 08:00:00','My funny cat','/us/vid/b3/b3a76c6b-7c7f-4af6-964f-803a9283c401');");
 
@@ -99,7 +99,7 @@ latest_videos.push("INSERT INTO killrvideo.latest_videos (yyyymmdd, videoid, add
 
 
 // Video Rating counters
-let video_rating_update = [];
+const video_rating_update = [];
 video_rating_update.push("UPDATE killrvideo.video_rating SET rating_counter = rating_counter + 1, rating_total = rating_total + 3 " +
   "WHERE videoid = 99051fe9-6a9c-46c2-b949-38ef78858dd0;");
 
@@ -110,7 +110,7 @@ video_rating_update.push("UPDATE killrvideo.video_rating SET rating_counter = ra
   "WHERE videoid = 99051fe9-6a9c-46c2-b949-38ef78858dd0;");
 
 // video_ratings_by_user
-let video_ratings_by_user = [];
+const video_ratings_by_user = [];
 video_ratings_by_user.push("INSERT INTO killrvideo.video_ratings_by_user (videoid, userid, rating)" +
   "VALUES ( 99051fe9-6a9c-46c2-b949-38ef78858dd0,9761d3d7-7fbd-4269-9988-6cfd4e188678 ,3);");
 
@@ -121,7 +121,7 @@ video_ratings_by_user.push("INSERT INTO killrvideo.video_ratings_by_user (videoi
   "VALUES ( 99051fe9-6a9c-46c2-b949-38ef78858dd0,9761d3d7-7fbd-4269-9988-6cfd4e188678 ,4);");
 
 // videos_by_tag
-let videos_by_tag = [];
+const videos_by_tag = [];
 videos_by_tag.push("INSERT INTO killrvideo.videos_by_tag (tag, videoid, tagged_date, added_date, name, preview_image_location)" +
   "VALUES ('cats',99051fe9-6a9c-46c2-b949-38ef78858dd0,'2012-05-25 08:30:29','2012-06-01 08:00:00','My funny cat','/us/vid/b3/b3a76c6b-7c7f-4af6-964f-803a9283c401');");
 
@@ -197,7 +197,7 @@ videos_by_tag.push("INSERT INTO killrvideo.videos_by_tag (tag, videoid, tagged_d
 // Video Comments. One for each side of the view.
 // Insert in pairs
 // This is done using the batch command to group our operations.
-let comments_by_video = [];
+const comments_by_video = [];
 comments_by_video.push("BEGIN BATCH " +
   "INSERT INTO killrvideo.comments_by_video (videoid, userid, commentid, comment)" +
   "VALUES (99051fe9-6a9c-46c2-b949-38ef78858dd0,d0f60aa8-54a9-4840-b70c-fe562b68842b,now(), 'Worst. Video. Ever.')" +
@@ -213,7 +213,7 @@ comments_by_video.push("BEGIN BATCH " +
   "APPLY BATCH;");
 
 // Video events
-let video_event = [];
+const video_event = [];
 video_event.push("INSERT INTO killrvideo.video_event (videoid, userid, event, event_timestamp, video_timestamp) " +
   "VALUES (99051fe9-6a9c-46c2-b949-38ef78858dd0,d0f60aa8-54a9-4840-b70c-fe562b68842b,'start',now(),0);");
 video_event.push("INSERT INTO killrvideo.video_event (videoid, userid, event, event_timestamp, video_timestamp)" +
@@ -223,8 +223,8 @@ video_event.push("INSERT INTO killrvideo.video_event (videoid, userid, event, ev
 video_event.push("INSERT INTO killrvideo.video_event (videoid, userid, event, event_timestamp, video_timestamp)" +
   "VALUES (99051fe9-6a9c-46c2-b949-38ef78858dd0,d0f60aa8-54a9-4840-b70c-fe562b68842b,'stop',now(),230000);");
 
-var async = require("async");
-let tables = [
+const async = require("async");
+const tables = [
   "user_credentials",
   "users",
   "videos",
@@ -238,73 +238,73 @@ let tables = [
   "comments_by_user",
   "video_event"
 ];
-
-module.exports = function(client) {
+/**
+ * TRUNCATE tables then insert the data.
+ * @param {array} inserts - List of insert statements .
+ */
+const inserts = (inserts) => (
+  async.each(inserts, function (insert, callback) {
+    client.execute(insert, function (err) {
+      if (err) {
+        console.log(err);
+      }
+      callback();
+    });
+  }, function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('done inserting');
+    }
+  })
+)
+};
+module.exports = function (client) {
   /**
    * TRUNCATE tables then insert the data.this will run everytime the server is restarted
    *
    * @param {array} tables - List of tables.
    */
-(() => {
-  async.each(tables, function(table, callback) {
-    client.execute(`TRUNCATE TABLE killrvideo.${table};`, function(err) {
-      if (err) {
-        console.log(err);
-      }
-      console.log(`truncated table ${table}`)
-      callback();
-    });
-  }, function(err) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log('done truncating tables');
-      /**
-       * Insert all the data
-       *
-       * @param {array} user_credentials -List of insert statements. table user_credentials.
-       * @param {array} users -List of insert statements. table users.
-       * @param {array} videos -List of insert statements. table videos.
-       * @param {array} user_videos -List of insert statements.table user_videos.
-       * @param {array} latest_videos -List of insert statements.table latest_videos.
-       * @param {array} video_rating_update - List of insert statements.table video_rating_update.
-       * @param {array} video_ratings_by_user - List of insert statements.table video_ratings_by_user.
-       * @param {array} videos_by_tag - List of insert statements.table videos_by_tag.
-       * @param {array} comments_by_video - List of insert statements.table comments_by_video.
-       * @param {array} video_event - List of insert statements .table video_event.
-       */
-      inserts(user_credentials)
-      inserts(users)
-      inserts(videos)
-      inserts(user_videos)
-      inserts(latest_videos)
-      inserts(video_rating_update)
-      inserts(video_ratings_by_user)
-      inserts(videos_by_tag)
-      inserts(comments_by_video)
-      inserts(video_event)
-    }
-  })
-})()
-
-/**
- * TRUNCATE tables then insert the data.
- * @param {array} inserts - List of insert statements .
- */
-  const inserts = (inserts) => (
-    async.each(inserts, function(insert, callback) {
-      client.execute(insert, function(err) {
+  (() => {
+    async.each(tables, function (table, callback) {
+      client.execute(`TRUNCATE TABLE killrvideo.${table};`, function (err) {
         if (err) {
           console.log(err);
         }
+        console.log(`truncated table ${table}`)
         callback();
       });
-    }, function(err) {
+    }, function (err) {
       if (err) {
         console.log(err);
       } else {
-        console.log('done inserting');
+        console.log('done truncating tables');
+        /**
+         * Insert all the data
+         *
+         * @param {array} user_credentials -List of insert statements. table user_credentials.
+         * @param {array} users -List of insert statements. table users.
+         * @param {array} videos -List of insert statements. table videos.
+         * @param {array} user_videos -List of insert statements.table user_videos.
+         * @param {array} latest_videos -List of insert statements.table latest_videos.
+         * @param {array} video_rating_update - List of insert statements.table video_rating_update.
+         * @param {array} video_ratings_by_user - List of insert statements.table video_ratings_by_user.
+         * @param {array} videos_by_tag - List of insert statements.table videos_by_tag.
+         * @param {array} comments_by_video - List of insert statements.table comments_by_video.
+         * @param {array} video_event - List of insert statements .table video_event.
+         */
+        inserts(user_credentials)
+        inserts(users)
+        inserts(videos)
+        inserts(user_videos)
+        inserts(latest_videos)
+        inserts(video_rating_update)
+        inserts(video_ratings_by_user)
+        inserts(videos_by_tag)
+        inserts(comments_by_video)
+        inserts(video_event)
       }
     })
-  )
-};
+  })()
+
+

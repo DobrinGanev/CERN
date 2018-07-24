@@ -35,48 +35,48 @@ https://github.com/pmcfadin/cassandra-videodb-sample-schema
 // require("../cassandra/sampleData/examples/videodb/videodb-schema")(cassandra);
 
 //test
-server.get('/hello', function(req, res) {
-  var data = [];
+server.get('/hello', function (req, res) {
+  const data = [];
   data.push({
-      message: "Updated message from server: Hello world from  the server"
-    })
-    //for effect to see the update of the state
-  setTimeout(function() {
+    message: "Updated message from server: Hello world from  the server"
+  })
+  //for effect to see the update of the state
+  setTimeout(function () {
     res.send(data);
   }, 3000)
 
 });
 
-var envset = {
+const envset = {
   production: process.env.NODE_ENV === 'production'
-};
-const hostname = envset.production ? (process.env.HOSTNAME || process['env'].HOSTNAME) : "localhost";
+}
+const hostname = envset.production ? (process.env.HOSTNAME || process['env'].HOSTNAME) : "localhost"
 
 /**
  * Create Redux store, and get intitial state.
  */
-const store = configureStore();
-const initialState = store.getState();
-server.use(function(req, res, next) {
-  match({ routes,location: req.url}, (error, redirectLocation, renderProps) => {
+const store = configureStore()
+const initialState = store.getState()
+server.use(function (req, res, next) {
+  match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (redirectLocation) {
       res.redirect(redirectLocation.pathname + redirectLocation.search);
-      return;
+      return
     }
     if (error || !renderProps) {
-      next();
-      return;
+      next()
+      return
     }
     const reactString = ReactDOM.renderToString(
-      <Provider store ={store}>
-        <RouterContext {...renderProps}/>
+      <Provider store={store}>
+        <RouterContext {...renderProps} />
       </Provider>
     );
     const webserver = __PRODUCTION__ ? "" : `//${hostname}:8080`;
-    console.log(webserver);
+    console.log(webserver)
 
-    let output = (
-   `<!doctype html>
+    const output = (
+      `<!doctype html>
 		<html lang="en-us">
 			<head>
 				<meta charset="utf-8">
@@ -95,10 +95,10 @@ server.use(function(req, res, next) {
         <script src=${webserver}/node_modules/material-design-lite/material.min.js></script>
 			</body>
 		</html>`
-    );
-    res.send(output);
-  });
-});
+    )
+    res.send(output)
+  })
+})
 
 if (__DEV__) {
   if (module.hot) {

@@ -27,12 +27,11 @@ var defaultSelectLocationState = function defaultSelectLocationState(state) {
  * correct router state.
  */
 function syncHistoryWithStore(history, store) {
-  var _ref = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
-  var _ref$selectLocationSt = _ref.selectLocationState;
-  var selectLocationState = _ref$selectLocationSt === undefined ? defaultSelectLocationState : _ref$selectLocationSt;
-  var _ref$adjustUrlOnRepla = _ref.adjustUrlOnReplay;
-  var adjustUrlOnReplay = _ref$adjustUrlOnRepla === undefined ? true : _ref$adjustUrlOnRepla;
+  var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
+      _ref$selectLocationSt = _ref.selectLocationState,
+      selectLocationState = _ref$selectLocationSt === undefined ? defaultSelectLocationState : _ref$selectLocationSt,
+      _ref$adjustUrlOnRepla = _ref.adjustUrlOnReplay,
+      adjustUrlOnReplay = _ref$adjustUrlOnRepla === undefined ? true : _ref$adjustUrlOnRepla;
 
   // Ensure that the reducer is mounted on the store and functioning properly.
   if (typeof selectLocationState(store.getState()) === 'undefined') {
@@ -104,6 +103,11 @@ function syncHistoryWithStore(history, store) {
   };
   unsubscribeFromHistory = history.listen(handleLocationChange);
 
+  // History 3.x doesn't call listen synchronously, so fire the initial location change ourselves
+  if (history.getCurrentLocation) {
+    handleLocationChange(history.getCurrentLocation());
+  }
+
   // The enhanced history uses store as source of truth
   return _extends({}, history, {
     // The listeners are subscribed to the store instead of history
@@ -125,10 +129,12 @@ function syncHistoryWithStore(history, store) {
         }
       });
 
-      // History listeners expect a synchronous call. Make the first call to the
+      // History 2.x listeners expect a synchronous call. Make the first call to the
       // listener after subscribing to the store, in case the listener causes a
       // location change (e.g. when it redirects)
-      listener(lastPublishedLocation);
+      if (!history.getCurrentLocation) {
+        listener(lastPublishedLocation);
+      }
 
       // Let user unsubscribe later
       return function () {

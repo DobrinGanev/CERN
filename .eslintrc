@@ -1,0 +1,9 @@
+{
+    "root": true,
+    "extends": [
+        "prettier-standard"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 9
+    }
+}

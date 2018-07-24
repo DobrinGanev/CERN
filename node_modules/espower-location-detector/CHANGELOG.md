@@ -1,3 +1,11 @@
+## [1.0.0](https://github.com/twada/espower-location-detector/releases/tag/v1.0.0) (2016-12-31)
+
+
+#### Chores
+
+  * The first stable release
+
+
 ### [0.1.2](https://github.com/twada/espower-location-detector/releases/tag/v0.1.2) (2016-02-10)
 
 

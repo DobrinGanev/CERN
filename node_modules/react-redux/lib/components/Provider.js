@@ -5,6 +5,10 @@ exports["default"] = undefined;
 
 var _react = require('react');
 
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 var _storeShape = require('../utils/storeShape');
 
 var _storeShape2 = _interopRequireDefault(_storeShape);
@@ -48,9 +52,7 @@ var Provider = function (_Component) {
   }
 
   Provider.prototype.render = function render() {
-    var children = this.props.children;
-
-    return _react.Children.only(children);
+    return _react.Children.only(this.props.children);
   };
 
   return Provider;
@@ -58,10 +60,12 @@ var Provider = function (_Component) {
 
 exports["default"] = Provider;
 
+
 if (process.env.NODE_ENV !== 'production') {
   Provider.prototype.componentWillReceiveProps = function (nextProps) {
     var store = this.store;
     var nextStore = nextProps.store;
+
 
     if (store !== nextStore) {
       warnAboutReceivingStore();
@@ -71,7 +75,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 Provider.propTypes = {
   store: _storeShape2["default"].isRequired,
-  children: _react.PropTypes.element.isRequired
+  children: _propTypes2["default"].element.isRequired
 };
 Provider.childContextTypes = {
   store: _storeShape2["default"].isRequired
