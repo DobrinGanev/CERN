@@ -1,55 +1,55 @@
 /*
 ref: https://github.com/pmcfadin/cassandra-videodb-sample-schema
 */
-var keyspace = "CREATE KEYSPACE IF NOT EXISTS killrvideo WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };";
-var tables = [
+const keyspace = "CREATE KEYSPACE IF NOT EXISTS killrvideo WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };";
+const tables = [
 
   // User credentials, keyed by email address so we can authenticate
   // Seperated from user in case auth is external (Google, Facebook, etc...)
-  'CREATE TABLE IF NOT EXISTS killrvideo.user_credentials (' +
-  'email text,' +
-  'password text,' +
-  'userid uuid,' +
-  'PRIMARY KEY (email));',
+  `CREATE TABLE IF NOT EXISTS killrvideo.user_credentials (
+    email text,
+    password text,
+    userid uuid,
+  PRIMARY KEY (email));`,
   // Basic entity table for a user
   // UUID for userid to link to auth system
 
-  'CREATE TABLE IF NOT EXISTS killrvideo.users (' +
-  'userid uuid,' +
-  'firstname varchar,' +
-  'lastname varchar,' +
-  'email text,' +
-  'created_date timestamp,' +
-  'PRIMARY KEY (userid) );',
+  `CREATE TABLE IF NOT EXISTS killrvideo.users (
+    userid uuid,
+    firstname varchar,
+    lastname varchar,
+    email text,
+    created_date timestamp,
+  PRIMARY KEY(userid) ); `,
 
   // Entity table that will store many videos for a unique user
   // Meta data - Height, Width, Bit rate, Encoding
   // Map thumbnails - stop, url
   // Selected thumbnail
 
-  'CREATE TABLE IF NOT EXISTS killrvideo.videos (' +
-  'videoid uuid,' +
-  'userid uuid,' +
-  'name varchar,' +
-  'description varchar,' +
-  'location text,' +
-  'location_type int,' +
-  // <position in video, url of thumbnail>
-  'preview_thumbnails map<text,text>,  ' +
-  'tags set<varchar>,' +
-  'added_date timestamp,' +
-  'PRIMARY KEY (videoid) );',
+  `CREATE TABLE IF NOT EXISTS killrvideo.videos (
+    videoid uuid,
+    userid uuid,
+    name varchar,
+    description varchar,
+    location text,
+    location_type int,
+    // <position in video, url of thumbnail>
+    preview_thumbnails map<text,text>,  
+    tags set<varchar>,
+    added_date timestamp,
+  PRIMARY KEY (videoid) );`,
 
   // One-to-many from the user point of view
   // Also know as a lookup table
-  'CREATE TABLE IF NOT EXISTS killrvideo.user_videos (' +
-  'userid uuid,' +
-  'added_date timestamp,' +
-  'videoid uuid,' +
-  'name text,' +
-  'preview_image_location text,' +
-  'PRIMARY KEY (userid, added_date, videoid)' +
-  ') WITH CLUSTERING ORDER BY (added_date DESC, videoid ASC);',
+  `CREATE TABLE IF NOT EXISTS killrvideo.user_videos (
+    userid uuid,
+    added_date timestamp,
+    videoid uuid,
+    name text,
+    preview_image_location text,
+    PRIMARY KEY (userid, added_date, videoid)
+  ) WITH CLUSTERING ORDER BY (added_date DESC, videoid ASC);`,
 
   // Track latest videos, grouped by day (if we ever develop a bad hotspot from the daily grouping here, we could mitigate by
   // splitting the row using an arbitrary group number, making the partition key (yyyymmdd, group_number))
@@ -122,14 +122,33 @@ var tables = [
   ') WITH CLUSTERING ORDER BY (event_timestamp DESC,event ASC);'
 ]
 
-var async = require("async");
-module.exports = function(client) {
+const async = require("async")
+
+const executeKeyspace = () => {
+  return new Promise((resolve, reject) => {
+    client.execute(keyspace, err => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve()
+      }
+    })
+  })
+}
+
+const createTables = () => {
+  return new Promise((resolve, reject) => {
+
+  })
+}
+
+module.exports = function (client) {
   /**
    * CREATE keyspace IF NOT EXISTS statement
    * @param {string} keyspace - List of tables.
    */
   (() => {
-    client.execute(keyspace, function(err) {
+    client.execute(keyspace, function (err) {
       if (err) {
         console.log(err);
       } else {
@@ -146,14 +165,14 @@ module.exports = function(client) {
      * CREATE keyspace IF NOT EXISTS statement
      * @param {array} tables - List of create table statements.
      */
-    async.each(tables, function(table, callback) {
-      client.execute(table, function(err) {
+    async.each(tables, function (table, callback) {
+      client.execute(table, function (err) {
         if (err) {
           console.log(err);
         }
         callback();
       });
-    }, function(err) {
+    }, function (err) {
       if (err) {
         console.log(err);
       } else {
@@ -162,4 +181,4 @@ module.exports = function(client) {
       }
     })
   )
-};
+}

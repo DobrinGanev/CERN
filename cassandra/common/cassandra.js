@@ -1,6 +1,5 @@
-import { Client } from 'cassandra-driver';
-import Promise from 'bluebird';
-import config from '../../config';
+import { Client } from 'cassandra-driver'
+import config from '../../config'
 
 /**
 * Create a singleton client instance with its methods promisified (i.e. gives us methods like executeAsync)
@@ -8,11 +7,13 @@ import config from '../../config';
 */
 
 
-export const cassandra = Promise.promisifyAll(
-  new Client({
-    contactPoints: config.contactPoints,
-    queryOptions: {
-      prepare: true
-    }
-  })
-);
+const cassandra = new Client({
+  contactPoints: config.contactPoints,
+  queryOptions: {
+    prepare: true
+  }
+})
+
+module.exports = { cassandra }
+
+
