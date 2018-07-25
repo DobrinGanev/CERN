@@ -4,6 +4,11 @@
         "prettier-standard"
     ],
     "parserOptions": {
-        "ecmaVersion": 9
+        "ecmaVersion": 9,
+        "jsx": true
+    },
+    "rules": {
+        "react/jsx-uses-react": "error",
+        "react/jsx-uses-vars": "error"
     }
 }

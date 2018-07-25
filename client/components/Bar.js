@@ -1,8 +1,8 @@
 import React from 'react'
 const Bar = () => (
   <div>
-    <h2>Barf</h2>
+    <h2>Bar</h2>
   </div>
 )
 
-export default Bar;
+export default Bar
