@@ -5,7 +5,7 @@ ref: https://github.com/pmcfadin/cassandra-videodb-sample-schema
 */
 
 //User_credentials
-const user_credentials = [];
+const user_credentials = []
 user_credentials.push("INSERT INTO killrvideo.user_credentials (userid,  email, password)" +
   "VALUES (d0f60aa8-54a9-4840-b70c-fe562b68842b,'tcodd@relational.com','5f4dcc3b5aa765d61d8327deb882cf99');");
 
@@ -258,7 +258,7 @@ const inserts = (inserts) => (
     }
   })
 )
-};
+
 module.exports = function (client) {
   /**
    * TRUNCATE tables then insert the data.this will run everytime the server is restarted
@@ -306,5 +306,4 @@ module.exports = function (client) {
       }
     })
   })()
-
-
+}

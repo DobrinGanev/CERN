@@ -1,3 +1,4 @@
+require('dotenv').config()
 import express from 'express'
 import React from 'react'
 import ReactDOM from 'react-dom/server'
@@ -7,8 +8,8 @@ import { Provider } from 'react-redux'
 import routesContainer from '../client/routes'
 import serverConfig from '../config'
 import { cassandra } from '../cassandra/common/cassandra'
-require('dotenv').config()
-let routes = routesContainer
+
+const routes = routesContainer
 
 const server = express()
 server.listen(serverConfig.port, error => {
@@ -17,11 +18,7 @@ server.listen(serverConfig.port, error => {
   }
 })
 
-/*
-Sample schema
-https://github.com/pmcfadin/cassandra-videodb-sample-schema
- * @param {singleton cassandra client instance} cassandra.
-*/
+
 // require('../cassandra/sampleData/examples/videodb/videodb-schema')(cassandra)
 
 // test
