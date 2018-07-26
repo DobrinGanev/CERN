@@ -15,7 +15,7 @@ const initialState = {
   error: false
 }
 
-const message = (state = initialState, action) => {
+export const message = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_MESSAGE_START: {
       return {
@@ -42,4 +42,3 @@ const message = (state = initialState, action) => {
       return state
   }
 }
-module.exports = message

@@ -7,13 +7,12 @@ import config from '../../config'
 */
 
 
-const cassandra = new Client({
+export const cassandra = new Client({
   contactPoints: config.contactPoints,
   queryOptions: {
     prepare: true
   }
 })
 
-module.exports = { cassandra }
 
 

@@ -1,6 +1,6 @@
 {
   "name": "CERN",
-  "description": "Cassandra, Express, React and NodeJS.",
+  "description": "Cassandra, Express, React-Redux and NodeJS.",
   "version": "0.0.0",
   "license": "MIT",
   "repository": {
@@ -35,7 +35,6 @@
     "postinstall": "webpack -p --config configs/webpack.client.js"
   },
   "dependencies": {
-    "bluebird": "^3.4.6",
     "cassandra-driver": "^3.5.0",
     "classnames": "^2.2.5",
     "cross-env": "^2.0.0",
@@ -56,7 +55,6 @@
     "redux-thunk": "^2.1.0"
   },
   "devDependencies": {
-    "ava": "^0.16.0",
     "babel": "^6.5.2",
     "babel-core": "^6.13.2",
     "babel-loader": "^6.2.5",
@@ -74,6 +72,7 @@
     "eslint-config-prettier": "^2.9.0",
     "eslint-config-prettier-standard": "^2.0.0",
     "eslint-config-react-app": "^2.1.0",
+    "eslint-config-standard": "^11.0.0",
     "eslint-loader": "^2.1.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
@@ -93,7 +92,6 @@
     "prettier": "^1.13.7",
     "react-addons-test-utils": "^15.3.1",
     "react-hot-loader": "^1.3.0",
-    "redux-ava": "^2.1.0",
     "redux-logger": "^2.6.1",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
@@ -112,15 +110,6 @@
     "yarn.lock": [
       "git rm --cached"
     ]
-  },
-  "ava": {
-    "require": [
-      "babel-register"
-    ],
-    "babel": "inherit",
-    "failFast": true,
-    "serial": true,
-    "verbose": true
   },
   "babel": {
     "presets": [

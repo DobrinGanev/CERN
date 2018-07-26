@@ -1,9 +1,8 @@
 import React from 'react'
-import { Router, Route } from 'react-router'
+import { Route } from 'react-router'
 import App from './containers/App'
 import Home from './components/Home'
 import Foo from './components/Foo'
-import Bar from './components/Bar'
 import Grid from './baseComponents/Grid'
 
 /**

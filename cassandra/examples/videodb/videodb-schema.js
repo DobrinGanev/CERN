@@ -122,10 +122,10 @@ const tables = [
   ) WITH CLUSTERING ORDER BY (event_timestamp DESC,event ASC);`
 ]
 
-const executeQueries = async (client, keyspace, tables) => {
-  await client.execute(keyspace).catch((err) => { console.log(err) })
+export const executeQueries = async (client, keyspace, tables) => {
+  await client.execute(keyspace).catch(err => console.log(err))
   for (let i = 0; i < tables.length; i++) {
-    await client.execute(tables[i]).catch((err) => { console.log(err) })
+    await client.execute(tables[i]).catch(err => console.log(err))
   }
 }
 

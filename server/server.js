@@ -9,7 +9,7 @@ import routesContainer from '../client/routes'
 import serverConfig from '../config'
 import { cassandra } from '../cassandra/common/cassandra'
 
-const routes = routesContainer
+let routes = routesContainer
 
 const server = express()
 server.listen(serverConfig.port, error => {
@@ -45,6 +45,7 @@ const hostname = envset.production
  */
 const store = configureStore()
 const initialState = store.getState()
+console.log(initialState)
 server.use((req, res, next) => {
   match(
     { routes, location: req.url },
