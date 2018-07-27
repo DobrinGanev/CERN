@@ -5,8 +5,12 @@ import configureStore from './store.js'
 import { Provider } from 'react-redux'
 import routes from './routes'
 import { syncHistoryWithStore } from 'react-router-redux'
+import BrowserRouter from 'react-router-dom/BrowserRouter'
+import { renderRoutes } from 'react-router-config'
+
 
 const store = configureStore(window.__INITIAL_STATE__)
+
 delete window.__INITIAL_STATE__
 const history = syncHistoryWithStore(browserHistory, store)
 
@@ -17,7 +21,9 @@ const reactRoot = window.document.getElementById('react-root')
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router routes={routes} history={history} />
+    <BrowserRouter>
+      {renderRoutes(routes)}
+    </BrowserRouter>
   </Provider>,
   reactRoot
 )

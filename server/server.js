@@ -1,11 +1,12 @@
 require('dotenv').config()
 import express from 'express'
 import React from 'react'
-import ReactDOM from 'react-dom/server'
-import { RouterContext, match, createMemoryHistory } from 'react-router'
+import ReactDOMServer from 'react-dom/server'
+import { StaticRouter, RouterContext } from 'react-router'
 import configureStore from '../client/store.js'
 import { Provider } from 'react-redux'
 import routesContainer from '../client/routes'
+import { renderRoutes, matchRoutes } from "react-router-config"
 import serverConfig from '../config'
 import { cassandra } from '../cassandra/common/cassandra'
 
@@ -45,28 +46,72 @@ const hostname = envset.production
  */
 const store = configureStore()
 const initialState = store.getState()
-console.log(initialState)
-server.use((req, res, next) => {
-  match(
-    { routes, location: req.url },
-    (error, redirectLocation, renderProps) => {
-      if (redirectLocation) {
-        res.redirect(redirectLocation.pathname + redirectLocation.search)
-        return
-      }
-      if (error || !renderProps) {
-        next()
-        return
-      }
-      const reactString = ReactDOM.renderToString(
-        <Provider store={store}>
-          <RouterContext {...renderProps} />
-        </Provider>
-      )
-      const webserver = __PRODUCTION__ ? '' : `//${hostname}:8080`
-      console.log(webserver)
+// server.use((req, res, next) => {
+//   // match(
+//   //   { routes, location: req.url },
+//   //   (error, redirectLocation, renderProps) => {
+//   // if (redirectLocation) {
+//   //   res.redirect(redirectLocation.pathname + redirectLocation.search)
+//   //   return
+//   // }
+//   // if (error || !renderProps) {
+//   //   next()
+//   //   return
+//   // }
+//   const context = {}
 
-      const output = `<!doctype html>
+//   const html = ReactDOMServer.renderToString(
+//     <StaticRouter
+//       location={req.url}
+//       context={context}
+//     >
+//       <Provider store={store}>
+//         <RouterContext {...renderProps} />
+//       </Provider>
+//     </StaticRouter>
+//   )
+//   // const reactString = ReactDOM.renderToString(
+//   //   <Provider store={store}>
+//   //     <RouterContext {...renderProps} />
+//   //   </Provider>
+//   // )
+//   const webserver = __PRODUCTION__ ? '' : `//${hostname}:8080`
+
+//   const output = `<!doctype html>
+// 		<html lang="en-us">
+// 			<head>
+// 				<meta charset="utf-8">
+// 				<title>
+//          </title>
+//          <link href=${webserver}/dist/main.css rel=stylesheet/>
+//          <link rel=stylesheet href=${webserver}/node_modules/material-design-lite/material.min.css>
+//          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+// 			</head>
+// 			<body>
+// 				<div id="react-root">${html}</div>
+// 				<script>
+// 					window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
+// 				</script>
+// 				<script src=${webserver}/dist/client.js></script>
+//         <script src=${webserver}/node_modules/material-design-lite/material.min.js></script>
+// 			</body>
+// 		</html>`
+//   res.send(output)
+//   // }
+//   //)
+// })
+server.get('/*', (req, res) => {
+  const webserver = __PRODUCTION__ ? '' : `//${hostname}:8080`
+  const context = {}
+  const html = ReactDOMServer.renderToString(
+    <StaticRouter location={req.url} context={context}>
+      {renderRoutes(routes)}
+      <Provider store={store}>
+        <RouterContext {...context} />
+      </Provider>
+    </StaticRouter>
+  )
+  const output = `<!doctype html>
 		<html lang="en-us">
 			<head>
 				<meta charset="utf-8">
@@ -77,7 +122,7 @@ server.use((req, res, next) => {
          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 			</head>
 			<body>
-				<div id="react-root">${reactString}</div>
+				<div id="react-root">${html}</div>
 				<script>
 					window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
 				</script>
@@ -85,9 +130,7 @@ server.use((req, res, next) => {
         <script src=${webserver}/node_modules/material-design-lite/material.min.js></script>
 			</body>
 		</html>`
-      res.send(output)
-    }
-  )
+  return res.send(output)
 })
 
 if (__DEV__) {

@@ -1,12 +1,18 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchMessage } from '../actions/messageActions'
 import { Link } from 'react-router'
 import Message from '../components/Message'
+import PropTypes from 'prop-types'
 
 export class App extends Component {
   constructor(props) {
     super(props)
+  }
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    messages: PropTypes.array.isRequired,
+    isLoading: PropTypes.bool.isRequired
   }
   componentDidMount() {
     this.props.dispatch(fetchMessage())
@@ -30,11 +36,6 @@ export class App extends Component {
   }
 }
 
-App.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  messages: PropTypes.array.isRequired,
-  isLoading: PropTypes.bool.isRequired
-}
 
 // Retrieve data from store as props
 function mapStateToProps(state) {

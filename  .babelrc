@@ -1,6 +1,16 @@
 {
-  "presets": ["es2015"],
+  "presets": [
+    "es2015"
+  ],
   "plugins": [
-    ["babel-root-import"]
+    [
+      "babel-root-import"
+    ],
+    [
+      "transform-class-properties",
+      {
+        "spec": true
+      }
+    ]
   ]
 }

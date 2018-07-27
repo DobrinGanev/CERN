@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 const Message = ({ messages }) => (
   <div>
     <ul>{messages.map((m, i) => <li key={i}>{m.message}</li>)}</ul>
@@ -6,6 +7,6 @@ const Message = ({ messages }) => (
 )
 
 Message.propTypes = {
-  messages: React.PropTypes.any
+  messages: PropTypes.any
 }
 export default Message
