@@ -1,18 +1,33 @@
-import React from 'react'
-import { Route } from 'react-router'
 import App from './containers/App'
 import Home from './components/Home'
 import Foo from './components/Foo'
 import Grid from './baseComponents/Grid'
-
 /**
  * The React Routes for both the server and the client.
  */
+const routes = [
+  {
+    component: App,
+    routes: [
+      {
+        path: '/',
+        exact: true,
+        component: Home
+      },
+      {
+        path: '/foo',
+        component: Foo
+      }
+    ]
+  }
+]
+const Routes = [
+  {
+    path: '/',
+    exact: true,
+    component: Home
+  }
+];
 
-module.exports = (
-  <Route component={App}>
-    <Route path="/" component={Home} />
-    <Route path="foo" component={Foo} />
-    <Route path="bar" component={() => <Grid hello="world" />} />
-  </Route>
-)
+export default routes
+

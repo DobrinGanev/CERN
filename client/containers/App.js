@@ -4,6 +4,7 @@ import { fetchMessage } from '../actions/messageActions'
 import { Link } from 'react-router'
 import Message from '../components/Message'
 import PropTypes from 'prop-types'
+import { withRouter } from 'react-router-dom'
 
 export class App extends Component {
   constructor(props) {
@@ -49,4 +50,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(App)
+export default withRouter(connect(mapStateToProps)(App))

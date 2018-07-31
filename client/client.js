@@ -1,6 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import { Router, browserHistory } from 'react-router'
+import { ReactDOM } from 'react-dom';
 import configureStore from './store.js'
 import { Provider } from 'react-redux'
 import routes from './routes'
@@ -12,21 +11,21 @@ import { renderRoutes } from 'react-router-config'
 const store = configureStore(window.__INITIAL_STATE__)
 
 delete window.__INITIAL_STATE__
-const history = syncHistoryWithStore(browserHistory, store)
+// const history = syncHistoryWithStore(browserHistory, store)
 
 /**
  * Fire-up React Router.
  */
 const reactRoot = window.document.getElementById('react-root')
 
-ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      {renderRoutes(routes)}
-    </BrowserRouter>
-  </Provider>,
-  reactRoot
-)
+// ReactDOM.hydrate(
+//   <Provider store={store}>
+//     <BrowserRouter>
+//       {renderRoutes(routes)}
+//     </BrowserRouter>,
+//   </Provider>,
+//   reactRoot
+// )
 
 /**
  * Detect whether the server-side render has been discarded due to an invalid checksum.
